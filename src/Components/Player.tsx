@@ -5,10 +5,11 @@ import { CiPause1, CiPlay1 } from "react-icons/ci";
 import { TfiControlSkipForward, TfiControlSkipBackward } from "react-icons/tfi";
 import { useApp } from '../App';
 import { convertStoMs } from '../utils/helpers';
-import { idText } from 'typescript';
+
 
 const Player = () => {
-  const ctx = useApp()
+  const ctx = useApp();
+
 
   const [current, setCurrent] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0)
@@ -26,7 +27,12 @@ const Player = () => {
     }
   }, [ctx.playing, ctx.activeSong.id])
 
-  
+
+  const footerPlayer = () => {
+    ctx.setPlaying(s => !s);
+    ctx.isId === ctx.savedId ? ctx.setId(0) : ctx.setId(ctx.savedId);
+  }
+
 
 
   return (
@@ -62,10 +68,7 @@ const Player = () => {
             </button>
           </span>
           <span className="text-3xl text-gray-300">
-            <button onClick={() => {
-              ctx.setPlaying(s => !s);
-              ctx.toggle(ctx.activeSong.id)
-            }} >
+            <button onClick={footerPlayer} >
               {ctx.playing ? (<CiPlay1 />) : (<CiPause1 />)}
             </button>
           </span>
@@ -83,8 +86,6 @@ const Player = () => {
         <div className="flex gap-2 playerMainDiv">
           <p>{convertStoMs(current)} </p>
           <input type="range" value={current} max={totalDuration} step="0.01" name="slider" onChange={(e) => {
-            // sound.seek([e.target.value]);
-            // console.log("E", e.target.value)
             audioRef.current.currentTime = e.target.value
           }} />
           <p>{convertStoMs(totalDuration)}</p>

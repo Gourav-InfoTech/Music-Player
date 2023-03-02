@@ -18,21 +18,23 @@ import Logout from "./Pages/Logout";
 const Context = createContext<{
   activeSong: any;
   onPlay: (s: any) => any;
-  toggle: (s: any) => any;
+  toggle: ({s,n}: any) => any;
   // togglePlay: () => any;
   setPlaying: React.Dispatch<React.SetStateAction<boolean>>,
   playing: Boolean,
   isId: number,
   setId: React.Dispatch<React.SetStateAction<number>>,
+  savedId: number,
 }>({
   activeSong: {},
   onPlay: () => { },
   setPlaying: () => { },
-  toggle: () => { },
+  toggle: ({id,ind}) => { },
   // togglePlay: () => { },
   playing: false,
   isId: 0,
   setId: () => { },
+  savedId: 0,
 });
 
 export function useApp() {
@@ -44,6 +46,7 @@ const App = () => {
   const [activeSong, setActiveSong] = useState({});
   const [playing, setPlaying] = useState(true);
   const [isId, setId] = useState(0);
+  const [savedId, setSavedId] = useState(0);
 
 
 
@@ -51,6 +54,7 @@ const App = () => {
 
     if (id === ind + 1) {
       setId(id);
+      setSavedId(id);
       setPlaying(false)
     }
     if (id === ind + 1 && isId == id) {
@@ -66,7 +70,7 @@ const App = () => {
 
   return (
     <>
-      <Context.Provider value={{ activeSong, onPlay, setPlaying, playing, toggle, isId, setId }}>
+      <Context.Provider value={{ activeSong, onPlay, setPlaying, playing, toggle, isId, setId, savedId }}>
         <BrowserRouter>
           <div className="wholeSection">
             <div className="flex flex-row">
